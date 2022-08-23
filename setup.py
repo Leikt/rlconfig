@@ -1,17 +1,17 @@
 from distutils.core import setup
 
-from increase_version import load_version_string
+with open('C:\\Users\\rlioret\\IdeaProjects\\Tools\\config\\version', 'r') as file:
+    VERSION=file.read()
 
 NAME = 'rlconfig'
-VERSION = load_version_string()
 DESCRIPTION = ''
 LONG_DESCRIPTION_FILE = 'README.md'
 AUTHOR = 'Robin LIORET'
 AUTHOR_EMAIL = 'robin.lioret@epro.com'
-URL = 'link'
-PACKAGES = ['your_package']
-PACKAGE_DIR = {'your_package': 'src/your_package'}
-PACKAGE_DATA = {'your_package': ['data/*']}
+URL = 'https://github.com/Leikt/rlconfig'
+PACKAGES = ['rlconfig']
+PACKAGE_DIR = {'rlconfig': 'src/rlconfig'}
+PACKAGE_DATA = {}
 DATA_FILES = []
 
 with open(LONG_DESCRIPTION_FILE, 'r') as file:
