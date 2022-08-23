@@ -1,0 +1,9 @@
+var1: VARIABLE_1_CONFIG_4
+cat1:
+  var2: VARIABLE_2_CONFIG_4
+aws:
+  access_key: ACCESS_KEY_CONFIG_4
+report:
+  formats:
+    - bold: True
+      align: center
