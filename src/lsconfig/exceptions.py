@@ -1,0 +1,4 @@
+
+class ConfigurationNotLoadedError(Exception):
+    pass
+

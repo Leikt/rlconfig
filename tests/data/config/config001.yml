@@ -1,9 +1,0 @@
-var1: VARIABLE_1
-cat1:
-  var2: VARIABLE_2
-aws:
-  access_key: ACCESS_KEY
-report:
-  formats:
-    - bold: True
-      align: center

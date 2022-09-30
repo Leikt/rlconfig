@@ -1,50 +1,46 @@
 import unittest
 
-from rlconfig import FernetWrapper, Config
+from lsconfig import *
+from lsconfig.config_item import ConfigItem
 
 
 class TestConfig(unittest.TestCase):
     def setUp(self) -> None:
-        Config.__clear__()
+        Config.clear()
 
-    def test_load(self):
-        config_file_yaml = 'data/config/config001.yml'
-        config_file = config_file_yaml + '.fer'
-        keyfile = 'data/config/key001.key'
-        FernetWrapper('test', keyfile, True).encrypt_file(config_file_yaml, config_file)
+    def test_001_simple(self):
+        self.assertFalse(Config.is_loaded('test_001'))
+        Config.load('test_001', 'config/test_001.yml')
+        self.assertTrue(Config.is_loaded('test_001'))
+        self.assertEqual('data/test_001.yml', Config('test_001').directory)
+        self.assertEqual('George POMPIDOU', Config('test_001').author.full_name)
 
-        Config('test', config_file, fernet_wrapper='test')
-        self.assertEqual(Config('test').var1, 'VARIABLE_1')
-        self.assertEqual(Config('test').cat1.var2, 'VARIABLE_2')
-        self.assertEqual(Config('test').report.formats[0].align, 'center')
+    def test_002_clear(self):
+        self.assertFalse(Config.is_loaded('test_002a'))
+        self.assertFalse(Config.is_loaded('test_002b'))
+        Config.load('test_002a', 'config/test_dummy.yml')
+        Config.load('test_002b', 'config/test_dummy.yml')
+        self.assertTrue(Config.is_loaded('test_002a'))
+        self.assertTrue(Config.is_loaded('test_002b'))
+        Config.clear()
+        self.assertFalse(Config.is_loaded('test_002a'))
+        self.assertFalse(Config.is_loaded('test_002b'))
 
-    def test_multiple(self):
-        config_file_yaml = 'data/config/config001.yml'
-        config_file_yaml_2 = 'data/config/config002.yml'
-        config_file = config_file_yaml + '.fer'
-        config_file_2 = config_file_yaml_2 + '.fer'
-        keyfile = 'data/config/key002.key'
-        FernetWrapper('test', keyfile, True).encrypt_file(config_file_yaml, config_file)
-        FernetWrapper('test').encrypt_file(config_file_yaml_2, config_file_2)
+    def test_003_composition(self):
+        Config.load('test_003', 'config/test_003.yml')
+        self.assertEqual('A Book Title', Config('test_003').title)
+        self.assertIsInstance(Config('test_003').author, ConfigItem)
 
-        Config('test1', config_file, fernet_wrapper='test')
-        Config('test2', config_file_2, fernet_wrapper='test')
-        self.assertEqual(Config('test1').var1, 'VARIABLE_1')
-        self.assertEqual(Config('test2').var1, 'VARIABLE_1_CONFIG_2')
+    def test_004_unload(self):
+        Config.load('test_004', 'config/test_dummy.yml')
+        self.assertTrue(Config.is_loaded('test_004'))
+        Config.release('test_004')
+        self.assertFalse(Config.is_loaded('test_004'))
 
-    def test_nesting(self):
-        config_file_yaml = 'data/config/config003.yml'
-        config_file = config_file_yaml + '.fer'
-        keyfile = 'data/config/key003.key'
-        FernetWrapper('test', keyfile, True).encrypt_file(config_file_yaml, config_file)
+    def test_E001_file_not_found(self):
+        with self.assertRaises(FileNotFoundError):
+            Config.load('test_E001', 'config/test_file_not_found.yml')
 
-        Config('global', config_file, fernet_wrapper='test')
-        Config('cat1', Config('global').cat1, fernet_wrapper='test')
-
-        self.assertEqual(Config('global').cat1.var2, Config('cat1').var2)
-
-    def test_not_encrypted(self):
-        config_file = 'data/config/config004.yml'
-
-        Config('test', config_file)
-        self.assertEqual(Config('test').var1, 'VARIABLE_1_CONFIG_4')
+    def test_E002_config_not_loaded(self):
+        with self.assertRaises(ConfigurationNotLoadedError):
+            _ = Config('not_loaded').value

@@ -3,14 +3,14 @@ from distutils.core import setup
 with open('C:\\Users\\rlioret\\IdeaProjects\\Tools\\config\\version', 'r') as file:
     VERSION=file.read()
 
-NAME = 'rlconfig'
+NAME = 'lsconfig'
 DESCRIPTION = ''
 LONG_DESCRIPTION_FILE = 'README.md'
-AUTHOR = 'Robin LIORET'
-AUTHOR_EMAIL = 'robin.lioret@epro.com'
-URL = 'https://github.com/Leikt/rlconfig'
+AUTHOR = 'Leikt SOLREIHIN'
+AUTHOR_EMAIL = 'leikt.solreihin@epro.com'
+URL = 'https://github.com/Leikt/lsconfig'
 PACKAGES = ['rlconfig']
-PACKAGE_DIR = {'rlconfig': 'src/rlconfig'}
+PACKAGE_DIR = {'lsconfig': 'src/lsconfig'}
 PACKAGE_DATA = {}
 DATA_FILES = []
 
